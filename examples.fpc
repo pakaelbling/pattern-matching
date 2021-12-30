@@ -1,0 +1,100 @@
+
+lam x : (nat + nat). x;
+
+lam x : (nat * nat). x;
+
+lam x : (((nat -> nat) * nat) + nat). x;
+
+lam x : unit. x;
+
+<>;
+
+0;
+
+< 1 , 2 >;
+
+inleft [nat] < 1 , 2 >;
+
+inright [nat] < 1 , 2 >;
+
+inleft [nat] ((lam x : nat . x) @ 1);
+
+inright [nat] ((lam x : nat . x) @ 1);
+
+case inleft[nat] 1 { inleft x => x | inright y => s y };
+
+case inright[nat] 1 { inleft x => x | inright y => s y };
+
+let pred be lam x : nat. case x { z => inleft[nat] <> | s x => inright[unit] x}
+in
+    <pred @ 0 , pred @ 2>
+end;
+
+let add be fix add : ((nat * nat) -> nat). lam p: (nat * nat). case p { < x , y > => case x { z => y | s x' => s (add @ < x' , y >)} }
+in
+add @ <3 , 5>
+end;
+
+let add be fix add : ((nat * nat) -> nat). lam p: (nat * nat). case p { < x , y > => case x { z => y | s x' => s (add @ < x' , y >)} }
+in
+let fastfib be fix fastfib : (nat -> (nat * nat)). lam x : nat.
+                   case x {
+                      z => < 0 , 1>
+                    | s y =>
+                       case fastfib @ y
+                        {< fibyminusone, fiby > => < fiby, add @ < fibyminusone, fiby > > }}
+in
+  <fastfib @ 0, <fastfib @ 1, <fastfib @ 2, <fastfib @ 3, <fastfib @ 4, < fastfib @ 5 , fastfib@ 6 > > > > > >
+end
+end;
+
+case true {true => false | false => true};
+
+case false {true => false | false => true};
+
+case nil { nil => true | cons < x , xs > => false};
+
+case cons <1, nil> { nil => true | cons < x , xs > => false};
+
+case cons <1, nil> { nil => true | cons < x , xs > => case x { z => true | s _ => false}};
+
+let allthree be lam p:(bool*(bool*bool)). case p { <true, <true, true>> => true | p => false}
+in
+    < allthree @ <true, <true, true> > , < allthree @ <true, <false, true> > , allthree @ <false, <true, true>> > >
+end;
+
+case cons<1, cons<2, cons<3, nil>>> { cons< a, cons< b, cons< c, xs >>> => c | _ => 0 };
+
+case cons<1, cons<2, cons<3, nil>>> { cons< 1, cons< 2, cons< 3, xs >>> => true | _ => false };
+
+case cons<1, cons<2, cons<4, nil>>> { cons< 1, cons< 2, cons< 3, xs >>> => true | _ => false };
+
+case 1 { 1 => true | x => false};
+
+let
+    samelength be
+     fix samelength : ((list * list) -> bool). lam p : (list * list).
+       case p {
+          < nil , nil > => true
+        | < cons<x,xs> , cons<y, ys> > => samelength @ <xs, ys>
+        | < l1 , l2 > => false
+      }
+in
+  < samelength @ <cons<1,cons<2,cons<3,nil>>>, cons<4,cons<5,cons<6,nil>>> >,
+    samelength @ <cons<1,cons<2,cons<3,nil>>>, cons<4,cons<5,cons<6,cons<7,nil>>>>> >
+end;
+
+case true {inleft <>  => false | inright <> => true };
+
+case false {inleft <>  => false | inright <> => true };
+
+case cons<4, cons<3, cons<2, cons< 1, nil>>>> { cons< p, cons< q, name (cons< r, xs >) as g >> => g | _ => nil  };
+
+case 1 { 0 => true | _ => false };
+lam x: X.x;
+
+let
+    double be fix d:(nat -> nat). lam x : nat. case x { 0 => 0 | s y => s s (d @ y) }
+in
+    double @ 4
+end ;

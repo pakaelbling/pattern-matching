@@ -1,0 +1,50 @@
+let projleft be lam p:(nat * nat). case p {<x,y> => x}
+in
+        projleft @ <2,3>
+end;
+
+let projright be lam p:(nat * nat). case p {<x,y> => y}
+in
+        projright @ <2,3>
+end;
+
+let unfold be lam x:nat.
+    case x {
+         z => inleft[nat] <>
+         | s n => inright[unit] n }
+in
+        <unfold @ 3, unfold @ 0>
+end;
+
+let lessthan be fix lessthan : ((nat * nat) -> bool). lam x : (nat * nat).
+    case x {
+         <z, _> => true
+         | <s y, z> => false
+         | <s n, s m> => lessthan @ <n, m>
+         }
+in
+        <lessthan @ <2,3>, lessthan @ <3,2>>
+end;
+
+let lessthan be fix lessthan : ((nat * nat) -> bool). lam x : (nat * nat).
+    case x {
+         <z, _> => true
+         | <s y, z> => false
+         | <s n, s m> => lessthan @ <n, m>
+         }
+in
+  let merge be fix merge : ((list * list) -> list). lam x : (list * list).
+      case x {
+      <nil, l2> => l2
+      | <l1, nil> => l1
+      | <name (cons<x,xs>) as l1, name (cons<y,ys>) as l2> =>
+        case lessthan @ <x, y> {
+             true => cons<x, merge @ <xs, l2>>
+             | false => cons<y, merge @ <l1, ys>> }}
+in
+        merge @ <cons<1,cons<3,nil>>, cons<2,cons<4,cons<6, nil>>>>
+end
+
+end;
+
+let y be lam f. ((nat * nat) -> )
