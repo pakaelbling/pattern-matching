@@ -1,0 +1,32 @@
+To compile the code, run SML/NJ and then type
+
+  - CM.make("sources.cm"); 
+
+at the prompt.
+
+There are three stub files you need to fill in:
+
+  check.sml          fill in the function check
+  step.sml           fill in the function progress
+  tasks.fpc          
+
+where NUMBER is a string of digits, and NAME is a string of letters. 
+
+To test out your code there is a top-level structure, Top.
+
+Structure of the support code:
+
+syntax.sml              implementation of syntax
+
+check.sml               implementation of type checker
+
+step.sml                implementation of evaluator
+
+top.sml                 read-eval-print loop
+
+stream.sml              stream library
+input.sml               library for reading files/stdin as streams
+lexer.sml               lexer (convert strings to tokens)
+parse.sml               parser (concrete to abstract syntax)
+print.sml               pretty printer
+
